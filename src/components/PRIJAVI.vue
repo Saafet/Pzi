@@ -6,8 +6,13 @@
         <h2>Prijava projekta</h2>
         <form @submit.prevent="dodajProjekt">
           <div class="mb-3">
-            <label for="name" class="form-label">Ime i Prezime</label>
+            <label for="name" class="form-label">Ime</label>
             <input v-model="forma.ime" type="text" class="form-control" id="name" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Prezime</label>
+            <input v-model="forma.prezime" type="text" class="form-control" id="surname" required />
           </div>
 
           <div class="mb-3">
@@ -61,6 +66,7 @@ export default {
     return {
       forma: {
         ime: '',
+        prezime: '',
         email: '',
         datum: '',
         tema: ''
@@ -86,7 +92,7 @@ export default {
     dodajProjekt() {
       this.projekti.push({ ...this.forma })
       this.snimiLocalStorage()
-      this.forma = { ime: '', email: '', datum: '', tema: '' }
+      this.forma = { ime: '', prezime: '', email: '', datum: '', tema: '' }
     },
     temaZauzeta(tema) {
       const broj = this.projekti.filter(p => p.tema === tema).length
@@ -109,6 +115,19 @@ export default {
 </script>
 
 <style scoped>
+
+form .form-control,
+form .form-select {
+  font-size: 1.3rem;
+  height: 45px;
+  margin-bottom: 2rem;
+}
+
+button.btn {
+  font-size: 1.2rem;
+  padding: 10px 25px;
+}
+
 .container {
   max-width: 1200px;
 }
