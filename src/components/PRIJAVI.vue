@@ -1,5 +1,23 @@
 <template>
   <div class="container my-5">
+
+    <!-- 📋 Google tablica -->
+    <div class="mb-5">
+      <h2 class="mb-3">📋 Tablica prijava i napretka</h2>
+      <p>U ovu tablicu studenti su dužni upisati imena parova pored unaprijed određenih tema. 
+        <br>
+        Svakoga tjedna dužni ste označiti vaš dolazak na predavanje sa "+" (dolasci na predavanja su OBAVEZNI)
+        <br>
+        Dužni ste svakoga tjedna uraditi zadaću te u tablicu staviti link na istu.
+      </p>
+      <div class="ratio ratio-16x9">
+        <iframe
+          src="https://docs.google.com/spreadsheets/d/1G0h6horQ5anOpgiLRdZrHxnfmoUOaJs9jIWuO5xyfrw/edit?gid=0#gid=0"
+          width="100%" height="500" frameborder="0" allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+
     <div class="row">
       <!-- Lijeva polovica: Forma za prijavu -->
       <div class="col-md-6">
@@ -48,13 +66,18 @@
             >
               <div class="card-body">
                 <h5 class="card-title">{{ tema }}</h5>
-                <p v-if="temaZauzeta(tema)" class="text-warning"><i class="bi bi-exclamation-triangle"></i> Tema zauzeta</p>
-                <p v-else class="text-success"><i class="bi bi-check-circle"></i> Tema dostupna</p>
+                <p v-if="temaZauzeta(tema)" class="text-warning">
+                  <i class="bi bi-exclamation-triangle"></i> Tema zauzeta
+                </p>
+                <p v-else class="text-success">
+                  <i class="bi bi-check-circle"></i> Tema dostupna
+                </p>
               </div>
             </div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -115,7 +138,6 @@ export default {
 </script>
 
 <style scoped>
-
 form .form-control,
 form .form-select {
   font-size: 1.3rem;
