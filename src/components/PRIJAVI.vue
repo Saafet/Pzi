@@ -1,166 +1,341 @@
 <template>
   <div class="container my-5">
 
-    <!-- 📋 Google tablica -->
-    <div class="mb-5">
-      <h2 class="mb-3">📋 Tablica prijava i napretka</h2>
-      <p>U ovu tablicu studenti su dužni upisati imena parova pored unaprijed određenih tema. 
-        <br>
-        Svakoga tjedna dužni ste označiti vaš dolazak na predavanje sa "+" (dolasci na predavanja su OBAVEZNI)
-        <br>
-        Dužni ste svakoga tjedna uraditi zadaću te u tablicu staviti link na istu.
-      </p>
-      <div class="ratio ratio-16x9">
-        <iframe
-          src="https://docs.google.com/spreadsheets/d/1G0h6horQ5anOpgiLRdZrHxnfmoUOaJs9jIWuO5xyfrw/edit?gid=0#gid=0"
-          width="100%" height="500" frameborder="0" allowfullscreen
-        ></iframe>
-      </div>
+    <!-- Dodavanje teme (admin/teacher) -->
+    <div class="mb-5 border rounded p-3 bg-light">
+      <h3>Dodaj novu temu</h3>
+      <form @submit.prevent="dodajTemu" class="row g-2 align-items-center">
+        <div class="col-auto flex-grow-1">
+          <input
+            v-model="novaTema"
+            type="text"
+            class="form-control"
+            placeholder="Unesi naziv nove teme"
+            required
+          />
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-success">Dodaj temu</button>
+        </div>
+      </form>
     </div>
 
-    <div class="row">
-      <!-- Lijeva polovica: Forma za prijavu -->
-      <div class="col-md-6">
-        <h2>Prijava projekta</h2>
-        <form @submit.prevent="dodajProjekt">
-          <div class="mb-3">
-            <label for="name" class="form-label">Ime</label>
-            <input v-model="forma.ime" type="text" class="form-control" id="name" required />
-          </div>
+    <!-- Prijava projekta -->
+    <div class="mb-5">
+      <h2>Prijava projekta</h2>
+      <form @submit.prevent="dodajProjekt">
+        <div class="mb-3">
+          <label class="form-label">Ime</label>
+          <input v-model="forma.ime" type="text" class="form-control" required />
+        </div>
 
-          <div class="mb-3">
-            <label for="email" class="form-label">Prezime</label>
-            <input v-model="forma.prezime" type="text" class="form-control" id="surname" required />
-          </div>
+        <div class="mb-3">
+          <label class="form-label">Prezime</label>
+          <input v-model="forma.prezime" type="text" class="form-control" required />
+        </div>
 
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input v-model="forma.email" type="email" class="form-control" id="email" required />
-          </div>
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input v-model="forma.email" type="email" class="form-control" required />
+        </div>
 
-          <div class="mb-3">
-            <label for="date" class="form-label">Datum</label>
-            <input v-model="forma.datum" type="date" class="form-control" id="date" required />
-          </div>
+        <div class="mb-3">
+          <label class="form-label">Datum</label>
+          <input v-model="forma.datum" type="date" class="form-control" required />
+        </div>
 
-          <div class="mb-3">
-            <label for="topic" class="form-label">Odaberite temu</label>
-            <select v-model="forma.tema" class="form-select" id="topic" required>
-              <option value="">Odaberite temu</option>
-              <option v-for="tema in sveTeme" :key="tema" :value="tema">{{ tema }}</option>
-            </select>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Prijavi projekt</button>
-        </form>
-      </div>
-
-      <!-- Desna polovica: Teme u karticama -->
-      <div class="col-md-6">
-        <h2 class="mb-3">Teme dostupne za odabir</h2>
-        <div class="row row-cols-1 row-cols-md-2 g-4">
-          <div class="col" v-for="(tema, index) in sveTeme" :key="index">
-            <div
-              class="card h-100 shadow animate__animated animate__fadeInUp"
-              :class="{ 'bg-secondary text-white': temaZauzeta(tema) }"
+        <div class="mb-3">
+          <label class="form-label">Odaberite temu</label>
+          <select v-model="forma.tema_id" class="form-select" required>
+            <option value="">Odaberite temu</option>
+            <option
+              v-for="tema in sveTeme"
+              :key="tema.id"
+              :value="tema.id"
+              :disabled="temaZauzeta(tema.id)"
             >
-              <div class="card-body">
-                <h5 class="card-title">{{ tema }}</h5>
-                <p v-if="temaZauzeta(tema)" class="text-warning">
-                  <i class="bi bi-exclamation-triangle"></i> Tema zauzeta
-                </p>
-                <p v-else class="text-success">
-                  <i class="bi bi-check-circle"></i> Tema dostupna
-                </p>
+              {{ tema.naziv }}
+              <span v-if="temaZauzeta(tema.id)"> (zauzeta)</span>
+            </option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Prijavi projekt</button>
+      </form>
+    </div>
+
+    <!-- Prikaz tema -->
+    <div class="mb-5">
+      <h3>Teme dostupne za odabir</h3>
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col" v-for="tema in sveTeme" :key="tema.id">
+          <div
+            class="card h-100 shadow"
+            :class="{ 'bg-secondary text-white': temaZauzeta(tema.id) }"
+          >
+            <div class="card-body">
+              <h5 class="card-title">{{ tema.naziv }}</h5>
+              <p v-if="temaZauzeta(tema.id)" class="text-warning">
+                <i class="bi bi-exclamation-triangle"></i> Tema zauzeta
+              </p>
+              <p v-else class="text-success">
+                <i class="bi bi-check-circle"></i> Tema dostupna
+              </p>
+
+              <!-- Dugmad za profesora -->
+              <div class="mt-3">
+                <button class="btn btn-sm btn-warning me-2" @click="pokreniUredi(tema)">Uredi</button>
+                <button class="btn btn-sm btn-danger" @click="obrisiTemu(tema.id)">Obriši</button>
               </div>
             </div>
           </div>
         </div>
       </div>
-
     </div>
+
+    <!-- Novi dodatak: Prikaz projekata i odjava projekta -->
+    <div class="mb-5">
+      <h3>Vaši prijavljeni projekti</h3>
+      <div v-if="projekti.length === 0">
+        <p>Nema prijavljenih projekata.</p>
+      </div>
+      <div v-else>
+        <div
+          class="border p-3 rounded mb-3"
+          v-for="projekat in projekti"
+          :key="projekat.id"
+        >
+          <p><b>Ime:</b> {{ projekat.ime }} {{ projekat.prezime }}</p>
+          <p><b>Email:</b> {{ projekat.email }}</p>
+          <p><b>Datum:</b> {{ projekat.datum }}</p>
+          <p><b>Tema:</b> {{ projekat.tema_naziv }}</p>
+          <button class="btn btn-sm btn-danger" @click="odjaviProjekt(projekat.id)">Odjavi temu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Uredi modal -->
+    <div v-if="urediTemu.id" class="modal-backdrop">
+      <div class="modal d-block" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Uredi temu</h5>
+              <button type="button" class="btn-close" @click="urediTemu = {}"></button>
+            </div>
+            <div class="modal-body">
+              <input
+                v-model="urediTemu.naziv"
+                type="text"
+                class="form-control"
+                placeholder="Novi naziv"
+              />
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" @click="urediTemu = {}">Zatvori</button>
+              <button class="btn btn-primary" @click="spremiUredi">Spremi</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
 export default {
-  name: 'PRIJAVI',
+  name: "PRIJAVI",
   data() {
     return {
-      forma: {
-        ime: '',
-        prezime: '',
-        email: '',
-        datum: '',
-        tema: ''
-      },
+      apiUrl: "http://localhost/my_project",
+      forma: { ime: "", prezime: "", email: "", datum: "", tema_id: "" },
+      novaTema: "",
+      sveTeme: [],
       projekti: [],
-      sveTeme: [
-        'Evidencija dolazaka QR kodom preko eduID',
-        'Društvena mreža za PUB kvizove',
-        'AI pomocnik za ucenje',
-        'Platforma za studentske STARTUP projekte',
-        'Aplikacija za digitalni potpis dokumenata',
-        'AI planer putovanja',
-        'QR kod foto memories',
-        'Aplikacija za personalizirane treninge',
-        'Aplikacija za slanje poruka na WhatsApp (chatbot)',
-        'Platforma za prijavu, praćenje i ocjenjivanje PZI projekata',
-        'Aplikacija za praćenje budžeta i AI savjetnik',
-        'Aplikacija za turističku ponudu Hercegovine - Chatbot'
-      ]
-    }
+      urediTemu: {},
+    };
   },
   methods: {
-    dodajProjekt() {
-      this.projekti.push({ ...this.forma })
-      this.snimiLocalStorage()
-      this.forma = { ime: '', prezime: '', email: '', datum: '', tema: '' }
-    },
-    temaZauzeta(tema) {
-      const broj = this.projekti.filter(p => p.tema === tema).length
-      return broj >= 2 // kolega će backend povezati kasnije
-    },
-    snimiLocalStorage() {
-      localStorage.setItem('projekti', JSON.stringify(this.projekti))
-    },
-    ucitajLocalStorage() {
-      const podaci = localStorage.getItem('projekti')
-      if (podaci) {
-        this.projekti = JSON.parse(podaci)
+    async dodajTemu() {
+      if (!this.novaTema.trim()) {
+        alert("Unesite naziv teme.");
+        return;
       }
+      try {
+        const res = await fetch(`${this.apiUrl}/dodaj-temu.php`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ naziv: this.novaTema.trim() }),
+        });
+        const json = await res.json();
+        if (json.success) {
+          alert(json.message);
+          this.novaTema = "";
+          this.ucitajTeme();
+        } else {
+          alert(json.message || "Greška pri dodavanju teme.");
+        }
+      } catch (e) {
+        alert("Greška kod dodavanja teme.");
+        console.error(e);
+      }
+    },
+    async ucitajTeme() {
+      try {
+        const res = await fetch(`${this.apiUrl}/dohvati-teme.php`);
+        const json = await res.json();
+        if (json.success) {
+          this.sveTeme = json.teme;
+        } else {
+          alert(json.message || "Greška kod dohvaćanja tema.");
+        }
+      } catch (e) {
+        console.error("Greška kod dohvaćanja tema:", e);
+      }
+    },
+    async dodajProjekt() {
+      if (
+        !this.forma.ime.trim() ||
+        !this.forma.prezime.trim() ||
+        !this.forma.email.trim() ||
+        !this.forma.datum ||
+        !this.forma.tema_id
+      ) {
+        alert("Sva polja su obavezna.");
+        return;
+      }
+      try {
+        const res = await fetch(`${this.apiUrl}/dodaj-projekt.php`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(this.forma),
+        });
+        const json = await res.json();
+        if (json.success) {
+          alert(json.message);
+          this.forma = { ime: "", prezime: "", email: "", datum: "", tema_id: "" };
+          this.ucitajProjekte();
+          this.ucitajTeme();
+        } else {
+          alert(json.message || "Greška pri prijavi projekta.");
+        }
+      } catch (e) {
+        alert("Greška pri slanju prijave.");
+        console.error(e);
+      }
+    },
+    async ucitajProjekte() {
+      try {
+        const res = await fetch(`${this.apiUrl}/dohvati-projekte.php`);
+        const json = await res.json();
+        if (json.success) {
+          this.projekti = json.projekti;
+        } else {
+          alert(json.message || "Greška kod dohvaćanja projekata.");
+        }
+      } catch (e) {
+        console.error("Greška kod dohvaćanja projekata:", e);
+      }
+    },
+    temaZauzeta(temaId) {
+      return this.projekti.some((p) => p.tema_id === temaId);
+    },
+    pokreniUredi(tema) {
+      this.urediTemu = { ...tema };
+    },
+    async spremiUredi() {
+  try {
+    const res = await fetch(`${this.apiUrl}/uredi-temu.php`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(this.urediTemu),
+    });
+    const json = await res.json();
+    if (json.success) {
+      alert("Tema uspješno uređena.");
+      await this.ucitajTeme();      // ponovo učitaj teme
+      await this.ucitajProjekte();  // i projekte
+      this.urediTemu = {};
+    } else {
+      alert(json.message || "Greška pri uređivanju.");
     }
+  } catch (e) {
+    console.error("Greška:", e);
+  }
+},
+    async obrisiTemu(id) {
+      try {
+        let res = await fetch(`${this.apiUrl}/obrisi-temu.php`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id }),
+        });
+        let json = await res.json();
+
+        if (json.success) {
+          alert(json.message);
+          this.ucitajTeme();
+        } else if (json.occupied) {
+          if (confirm(json.message)) {
+            res = await fetch(`${this.apiUrl}/obrisi-temu.php`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id, force: true }),
+            });
+            json = await res.json();
+
+            if (json.success) {
+              alert(json.message);
+              this.ucitajTeme();
+              this.ucitajProjekte();
+            } else {
+              alert(json.message || "Greška pri brisanju teme.");
+            }
+          }
+        } else {
+          alert(json.message || "Greška pri brisanju teme.");
+        }
+      } catch (e) {
+        console.error("Greška:", e);
+        alert("Greška pri brisanju teme.");
+      }
+    },
+    // NOVO: metoda za odjavu projekta
+    async odjaviProjekt(id) {
+      if (!confirm("Jeste li sigurni da želite odjaviti ovaj projekt?")) return;
+      try {
+        const res = await fetch(`${this.apiUrl}/obrisi-projekt.php`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id }),
+        });
+        const json = await res.json();
+        if (json.success) {
+          alert(json.message);
+          this.ucitajProjekte();
+          this.ucitajTeme();
+        } else {
+          alert(json.message || "Greška pri odjavi projekta.");
+        }
+      } catch (e) {
+        console.error(e);
+        alert("Greška pri odjavi projekta.");
+      }
+    },
   },
   mounted() {
-    this.ucitajLocalStorage()
-  }
-}
+    this.ucitajTeme();
+    this.ucitajProjekte();
+  },
+};
 </script>
 
-<style scoped>
-form .form-control,
-form .form-select {
-  font-size: 1.3rem;
-  height: 45px;
-  margin-bottom: 2rem;
-}
-
-button.btn {
-  font-size: 1.2rem;
-  padding: 10px 25px;
-}
-
-.container {
-  max-width: 1200px;
-}
-form .form-label {
-  font-weight: bold;
-}
-.card {
-  border-radius: 10px;
-  transition: transform 0.3s ease;
-}
-.card:hover {
-  transform: scale(1.02);
+<style>
+.modal-backdrop {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1050;
 }
 </style>

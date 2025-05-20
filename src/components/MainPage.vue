@@ -65,13 +65,11 @@
 
     <!-- Edukacija -->
     <section id="edu" class="container mt-5">
-      <h2 class="text-center mb-4"> Tehnologije </h2>
+      <h2 class="text-center mb-4">Tehnologije</h2>
 
       <div class="row text-center">
         <div v-for="tech in tehnologije" :key="tech.naziv" class="col-6 col-md-3 mb-4">
-          <a :href="tech.link" target="_blank" rel="noopener"
-            class="tech-card p-3 border rounded d-block text-decoration-none text-light"
-            :title="'Saznaj više o ' + tech.naziv">
+          <a :href="tech.link" target="_blank" rel="noopener" class="tech-card p-3 border rounded d-block text-decoration-none text-light" :title="'Saznaj više o ' + tech.naziv">
             <i :class="['bi', tech.ikona]" style="font-size: 3rem; color: #007bff;"></i>
             <h5 class="mt-2">{{ tech.naziv }}</h5>
             <p class="small">{{ tech.opis }}</p>
@@ -79,6 +77,7 @@
         </div>
       </div>
 
+      <!-- Tutorijali -->
       <div class="accordion" id="tutorialAccordion">
         <div class="accordion-item" v-for="(kat, idx) in tutorijali" :key="idx">
           <h2 class="accordion-header" :id="'heading' + idx">
@@ -100,24 +99,24 @@
         </div>
       </div>
 
-      <div class="d-flex gap-4 flex-wrap justify-content-center">
-        <div class="video-wrapper mt-5">
+      <!-- Video tutorijali -->
+      <div class="d-flex gap-4 flex-wrap justify-content-center mt-5">
+        <div class="video-wrapper">
           <h4 class="video-title text-center">Pogledajte: Kako izraditi svoju prvu Vue aplikaciju</h4>
           <div class="ratio ratio-16x9">
-            <iframe src="https://www.youtube.com/embed/JLt3GrDZDvQ?si=ot0en-nPvNpEZIiQ" title="Vue Uvod"
-              allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/JLt3GrDZDvQ?si=ot0en-nPvNpEZIiQ" title="Vue Uvod" allowfullscreen></iframe>
           </div>
         </div>
 
-        <div class="video-wrapper mt-5">
+        <div class="video-wrapper">
           <h4 class="video-title text-center">Pogledajte: Backend dio aplikacije</h4>
           <div class="ratio ratio-16x9">
-            <iframe src="https://www.youtube.com/embed/OeEHJgzqS1k?si=GbUrD_zkbiPFA_mC" title="Back Tutorial"
-              allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/OeEHJgzqS1k?si=GbUrD_zkbiPFA_mC" title="Back Tutorial" allowfullscreen></iframe>
           </div>
         </div>
       </div>
 
+      <!-- Accordion - dodatne informacije -->
       <div class="accordion mt-5" id="edukacijaAccordion">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
@@ -130,126 +129,29 @@
             data-bs-parent="#edukacijaAccordion">
             <div class="accordion-body">
               Prijavite se na e-kolegij koristeći svoj eduID račun.<br>
-              <strong>🔗 Poveznica:</strong> <a href="https://eucenje.sum.ba/moodle/course/view.php?id=4980"
-                target="_blank">e-kolegij</a><br>
-<div class="accordion mt-5" id="edukacijaAccordion">
-
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="headingOne">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#kolegij"
-        aria-expanded="true" aria-controls="kolegij">
-        📘 Prijava na e-Kolegij
-      </button>
-    </h2>
-    <div id="kolegij" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-      data-bs-parent="#edukacijaAccordion">
-      <div class="accordion-body">
-        Prijavite se na e-kolegij koristeći svoj eduID račun.<br>
-        <strong>🔗 Poveznica:</strong> <a href="https://eucenje.sum.ba/moodle/course/view.php?id=4980"
-          target="_blank">e-kolegij</a><br>
-        <strong>🔐 Lozinka za pristup e-kolegiju:</strong> <code>Pzi2025#</code>
-            <br><br>
-    📅 <strong>Orašje - Googloe Meet Link:</strong><br>
-    <a href="https://meet.google.com/xyz-abc-def" target="_blank" class="btn btn-outline-primary mt-2">
-      Pristupi predavanju
-    </a>
-      </div>
-    </div>
-  </div>
-
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="headingTwo">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#skripta"
-        aria-expanded="false" aria-controls="skripta">
-        📄 Prikaži upute za izradu projekta
-      </button>
-    </h2>
-    <div id="skripta" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-      data-bs-parent="#edukacijaAccordion">
-      <div class="accordion-body">
-        Ovaj PDF dokument sadrži sve ključne informacije o načinu izrade te ocjenjivanju vašeg projekta.
-        <br><br>
-        Dokument služi kao vodič za studente u procesu izrade funkcionalne i kvalitetne web aplikacije.
-        <br>
-        <a href="/dokumentacija/Upute_za_izradu_projekta.pdf" class="btn btn-success mt-2" target="_blank">
-          Prikaži dokument
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="headingThree">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-        data-bs-target="#dokumentacija" aria-expanded="false" aria-controls="dokumentacija">
-        📚 Dokumentacija projekta
-      </button>
-    </h2>
-    <div id="dokumentacija" class="accordion-collapse collapse" aria-labelledby="headingThree"
-      data-bs-parent="#edukacijaAccordion">
-      <div class="accordion-body">
-        Ova dokumentacija prikazuje sve aspekte izrade web aplikacije – od početne ideje do konačne implementacije.
-        <br><br>
-        U prezentaciji su detaljno razrađeni frontend i backend dijelovi sustava, uključujući korištene
-        tehnologije poput HTML-a, CSS-a, JavaScript-a, Vue.js-a za korisničko sučelje, te PHP-a, Laravel-a i
-        MySQL-a za poslužiteljsku logiku i bazu podataka.
-        <br><br>
-        Obuhvaćeni su i koncepti poput autentifikacije korisnika, organizacije direktorija, REST API pristupa te MVC arhitekture.
-        <br><br>
-        Dokumentacija sadrži i faze razvoja, primjere koda, dijagrame toka, te praktične savjete za testiranje, održavanje i samoevaluaciju aplikacije.
-        <br><br>
-        Na kraju se nalaze česte pogreške i preporuke iz iskustva – kako biste izbjegli uobičajene zamke i postigli najbolji rezultat.
-        <br>
-        <a href="https://docs.google.com/presentation/d/1AO7DxeAvBOM0qfUfVmtM1iw9hiEfsE2emQAjpnF_9FQ/edit?slide=id.p#slide=id.p"
-          class="btn btn-secondary mt-2" target="_blank">Otvori prezentaciju</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="headingFour">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#github"
-        aria-expanded="false" aria-controls="github">
-        💻 GitHub projekt
-      </button>
-    </h2>
-    <div id="github" class="accordion-collapse collapse" aria-labelledby="headingFour"
-      data-bs-parent="#edukacijaAccordion">
-      <div class="accordion-body">
-        Pregledaj izvorni kod i uči iz praktičnih primjera.<br>
-        <a href="https://github.com/MateaTufekcic/PZI.git" class="btn btn-dark mt-2" target="_blank">Pogledaj primjer</a>
-      </div>
-    </div>
-  </div>
-
-</div>
-
+              <strong>🔗 Poveznica:</strong> <a href="https://eucenje.sum.ba/moodle/course/view.php?id=4980" target="_blank">e-kolegij</a><br>
+              <strong>🔐 Lozinka za pristup:</strong> <code>Pzi2025#</code><br><br>
+              📅 <strong>Orašje - Google Meet:</strong><br>
+              <a href="https://meet.google.com/xyz-abc-def" target="_blank" class="btn btn-outline-primary mt-2">Pristupi predavanju</a>
             </div>
           </div>
         </div>
-
 
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingTwo">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#skripta"
               aria-expanded="false" aria-controls="skripta">
-              📄 Prikaži upute za izradu projekta
+              📄 Upute za izradu projekta
             </button>
           </h2>
           <div id="skripta" class="accordion-collapse collapse" aria-labelledby="headingTwo"
             data-bs-parent="#edukacijaAccordion">
             <div class="accordion-body">
               Ovaj PDF dokument sadrži sve ključne informacije o načinu izrade te ocjenjivanju vašeg projekta.
-              <br><br>
-              Dokument služi kao vodič za studente u procesu izrade funkcionalne i kvalitetne web aplikacije.
-              <br>
-              <a href="/dokumentacija/Upute_za_izradu_projekta.pdf" class="btn btn-success mt-2" target="_blank">
-                Prikaži dokument
-              </a>
+              <a href="/dokumentacija/Upute_za_izradu_projekta.pdf" class="btn btn-success mt-2" target="_blank">Prikaži dokument</a>
             </div>
           </div>
         </div>
-
 
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingThree">
@@ -261,22 +163,11 @@
           <div id="dokumentacija" class="accordion-collapse collapse" aria-labelledby="headingThree"
             data-bs-parent="#edukacijaAccordion">
             <div class="accordion-body">
-              Ova dokumentacija prikazuje sve aspekte izrade web aplikacije – od početne ideje do konačne
-              implementacije.
-              <br><br>
-              U prezentaciji su detaljno razrađeni frontend i backend dijelovi sustava, uključujući korištene
-              tehnologije poput HTML-a, CSS-a, JavaScript-a, Vue.js-a za korisničko sučelje, te PHP-a, Laravel-a i
-              MySQL-a za poslužiteljsku logiku i bazu podataka.
-              <br><br>
-              Dokumentacija sadrži viziju, primjere koda, faze razvoja, te praktične preporuke za
-              održavanje i testiranje aplikacije. Idealna je kao vodič kroz cijeli razvojni proces.
-              <br>
-              <a href="https://docs.google.com/presentation/d/1AO7DxeAvBOM0qfUfVmtM1iw9hiEfsE2emQAjpnF_9FQ/edit?slide=id.p#slide=id.p"
-                class="btn btn-secondary mt-2" target="_blank">Otvori prezentaciju</a>
+              Detaljna prezentacija svih faza razvoja aplikacije.<br>
+              <a href="https://docs.google.com/presentation/d/1AO7DxeAvBOM0qfUfVmtM1iw9hiEfsE2emQAjpnF_9FQ/edit?slide=id.p#slide=id.p" class="btn btn-secondary mt-2" target="_blank">Otvori prezentaciju</a>
             </div>
           </div>
         </div>
-
 
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingFour">
@@ -288,13 +179,12 @@
           <div id="github" class="accordion-collapse collapse" aria-labelledby="headingFour"
             data-bs-parent="#edukacijaAccordion">
             <div class="accordion-body">
-              Pregledaj izvorni kod i uči iz praktičnih primjera.<br>
+              Pogledaj izvorni kod aplikacije.<br>
               <a href="https://github.com/MateaTufekcic/PZI.git" class="btn btn-dark mt-2" target="_blank">Pogledaj primjer</a>
             </div>
           </div>
         </div>
       </div>
-
     </section>
 
     <!-- Komponente -->
