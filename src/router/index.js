@@ -45,12 +45,12 @@ router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         const user = localStorage.getItem('user');
         if (!user) {
-            next('/'); // Ako nije prijavljen, preusmjeri na login
+            next('/');
         } else {
-            next(); // Ako je prijavljen, nastavi na MainPage
+            next();
         }
     } else {
-        next(); // Ako ruta ne zahtijeva autentifikaciju, dozvoliti pristup
+        next();
     }
 });
 
