@@ -9,7 +9,6 @@
           <button type="submit">Login</button>
         </form>
         <p @click="switchForm('register')">Don't have an account? Register</p>
-        <!-- Izbačen "Forgot password?" link -->
       </div>
 
       <div v-if="currentForm === 'register'" class="form-container">
@@ -32,7 +31,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      currentForm: 'login', // sad samo 'login' i 'register'
+      currentForm: 'login', 
       username: '',
       password: '',
       email: ''

@@ -4,7 +4,7 @@
       <span class="title-icon"></span> Ocjenjivanje
     </h2>
 
-    <!-- Odabir projekta -->
+    
     <div class="form-group mb-4">
       <label for="projekat">Odaberi projekat:</label>
       <select v-model="odabraniProjektId" @change="postaviOdabraniProjekt" class="form-control" id="projekat">
@@ -15,7 +15,7 @@
       </select>
     </div>
 
-    <!-- Forma za ocjenjivanje -->
+    
     <div v-if="odabraniProjekt">
       <p class="subtitle-ocjenjivanje">
         Označi kriterije koje projekt zadovoljava. Obvezni kriteriji su označeni zvjezdicom (*).
@@ -51,7 +51,7 @@
           {{ sviObvezniZadovoljeni ? 'Svi obvezni kriteriji su zadovoljeni ✅' : 'Ne zadovoljava kriterij ❌' }}
         </p>
 
-        <!-- Prikaz nezadovoljenih obveznih kriterija -->
+        
         <div v-if="nezadovoljeniObvezniKriteriji.length" class="alert alert-warning mt-2">
           <strong>❌ Ne zadovoljava sljedeće obvezne kriterije:</strong>
           <ul class="mb-0">
@@ -65,12 +65,12 @@
       </div>
     </div>
 
-    <!-- Debug: Prikaz broja učenika -->
+    
     <div class="mt-3">
       <p><strong>Broj učenika u sistemu:</strong> {{ sviUcenici.length }}</p>
     </div>
 
-    <!-- Tabela sa učenicima i ocjenama -->
+    
     <div v-if="sviUcenici.length" class="mt-5">
       <h3>Učenici i njihove ocjene</h3>
       <table class="table table-bordered table-hover">
@@ -160,7 +160,7 @@ const dohvatiUcenikeSaOcjenama = async () => {
           ucenik.nezadovoljni_obvezni && ucenik.nezadovoljni_obvezni !== "-"
             ? [ucenik.nezadovoljni_obvezni]
             : [],
-        obvezni_zadovoljeni: ucenik.nezadovoljni_obvezni === "-" // ključna promjena
+        obvezni_zadovoljeni: ucenik.nezadovoljni_obvezni === "-"
       }))
     }
   } catch (err) {
@@ -193,7 +193,7 @@ const spremiOcjenu = async () => {
     const res = await axios.post("http://localhost/my_project/spremi-ocjenu.php", podaci)
     if (res.data.success) {
       alert("Ocjena je spremljena!")
-      await dohvatiUcenikeSaOcjenama() // osvježi tablicu učenika
+      await dohvatiUcenikeSaOcjenama()
     } else {
       alert("Greška prilikom spremanja ocjene!")
     }

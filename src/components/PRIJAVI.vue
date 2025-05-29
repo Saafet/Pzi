@@ -1,7 +1,7 @@
 <template>
   <div class="container my-5">
 
-    <!-- Dodavanje teme (admin/teacher) -->
+  
     <div class="mb-5 border rounded p-3 bg-light">
       <h3>Dodaj novu temu</h3>
       <form @submit.prevent="dodajTemu" class="row g-2 align-items-center">
@@ -20,7 +20,7 @@
       </form>
     </div>
 
-    <!-- Prijava projekta -->
+    
     <div class="mb-5">
       <h2>Prijava projekta</h2>
       <form @submit.prevent="dodajProjekt">
@@ -64,7 +64,7 @@
       </form>
     </div>
 
-    <!-- Prikaz tema -->
+    
     <div class="mb-5">
       <h3>Teme dostupne za odabir</h3>
       <div class="row row-cols-1 row-cols-md-2 g-4">
@@ -82,7 +82,7 @@
                 <i class="bi bi-check-circle"></i> Tema dostupna
               </p>
 
-              <!-- Dugmad za profesora -->
+              
               <div class="mt-3">
                 <button class="btn btn-sm btn-warning me-2" @click="pokreniUredi(tema)">Uredi</button>
                 <button class="btn btn-sm btn-danger" @click="obrisiTemu(tema.id)">Obriši</button>
@@ -93,7 +93,7 @@
       </div>
     </div>
 
-    <!-- Novi dodatak: Prikaz projekata i odjava projekta -->
+    
     <div class="mb-5">
       <h3>Vaši prijavljeni projekti</h3>
       <div v-if="projekti.length === 0">
@@ -114,7 +114,7 @@
       </div>
     </div>
 
-    <!-- Uredi modal -->
+    
     <div v-if="urediTemu.id" class="modal-backdrop">
       <div class="modal d-block" tabindex="-1">
         <div class="modal-dialog">
@@ -254,8 +254,8 @@ export default {
     const json = await res.json();
     if (json.success) {
       alert("Tema uspješno uređena.");
-      await this.ucitajTeme();      // ponovo učitaj teme
-      await this.ucitajProjekte();  // i projekte
+      await this.ucitajTeme();      
+      await this.ucitajProjekte();  
       this.urediTemu = {};
     } else {
       alert(json.message || "Greška pri uređivanju.");
@@ -301,7 +301,7 @@ export default {
         alert("Greška pri brisanju teme.");
       }
     },
-    // NOVO: metoda za odjavu projekta
+    
     async odjaviProjekt(id) {
       if (!confirm("Jeste li sigurni da želite odjaviti ovaj projekt?")) return;
       try {

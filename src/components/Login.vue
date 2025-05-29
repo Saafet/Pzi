@@ -1,9 +1,9 @@
 <template>
   <div>
-    <!-- Gumb za otvaranje modala -->
+    
     <button class="btn btn-primary" @click="showModal = true">Prijava</button>
 
-    <!-- Modal prozor -->
+    
     <div
       class="modal fade show"
       tabindex="-1"
@@ -54,7 +54,7 @@
       </div>
     </div>
 
-    <!-- Pozadina modala -->
+    
     <div class="modal-backdrop fade show" v-if="showModal"></div>
   </div>
 </template>
@@ -114,7 +114,6 @@ export default {
 </script>
 
 <style scoped>
-/* Bootstrap modal workaround za prikaz bez JavaScript metode show() */
 .modal {
   display: block;
 }

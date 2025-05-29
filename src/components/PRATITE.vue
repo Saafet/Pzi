@@ -147,7 +147,7 @@ export default {
   watch: {
     selectedDay(newDay) {
       if (newDay) {
-        this.loadProjects(); // automatski učitaj projekte svaki put kad klikneš dan
+        this.loadProjects();
       }
     }
   },
@@ -161,7 +161,7 @@ export default {
   methods: {
     addNewProjectLocally(noviProjekt) {
       this.allProjects.push(noviProjekt);
-      this.loadProjects(); // odmah osvježi prikaz
+      this.loadProjects(); 
     },
     async loadProjects() {
       try {

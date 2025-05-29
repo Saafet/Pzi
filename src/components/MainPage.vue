@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Navbar -->
+    
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">TaskNest</a>
@@ -12,16 +12,16 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
           <div class="w-100 d-flex justify-content-between align-items-center">
-            <!-- Navigacija u sredini -->
+            
             <ul class="navbar-nav mx-auto">
+              <li class="nav-item"><a class="nav-link" href="#edu">UČI WEB</a></li>
               <li class="nav-item"><a class="nav-link" href="#prijavi">PRIJAVI PROJEKT</a></li>
               <li class="nav-item"><a class="nav-link" href="#pratite">PRATITE RAD</a></li>
               <li class="nav-item"><a class="nav-link" href="#ocjenjivanje">OCJENJIVANJE</a></li>
-              <li class="nav-item"><a class="nav-link" href="#edu">UČI WEB</a></li>
               <li class="nav-item"><a class="nav-link" href="#kontakt">KONTAKT</a></li>
             </ul>
 
-            <!-- Login desno -->
+            
             <ul class="navbar-nav">
               <li class="nav-item">
                 <button class="nav-link btn btn-link p-0" @click="logout" style="border: none; background: none;">Logout</button>
@@ -35,11 +35,11 @@
 
 
 
-    <!-- Uvodni tekst --><br><br>
+    <br><br>
 
     <section class=" uvodni-tekst mt-5 pt-5 py-5 bg-light rounded shadow">
       <div class="row align-items-center">
-        <!-- Tekst dobrodošlice -->
+        
         <div class="col-md-6 px-4 text-dark">
           <h2 class="mb-4 fw-bold text-primary">Dobrodošli na platformu TaskNest!</h2>
           <p class="lead">
@@ -55,7 +55,7 @@
           <a href="#prijavi" class="btn btn-primary btn-lg mt-3">🚀 Započni sada</a>
         </div>
 
-        <!-- Slika s desne strane -->
+        
         <div class="col-md-6 text-center">
           <img src="/fotografije/tehnologije.png" alt="Tehnologije" class="img-fluid rounded shadow-sm"
             style="max-height: 320px;" />
@@ -63,7 +63,7 @@
       </div>
     </section>
 
-    <!-- Edukacija -->
+    
     <section id="edu" class="container mt-5">
       <h2 class="text-center mb-4">Tehnologije</h2>
 
@@ -77,7 +77,7 @@
         </div>
       </div>
 
-      <!-- Tutorijali -->
+      
       <div class="accordion" id="tutorialAccordion">
         <div class="accordion-item" v-for="(kat, idx) in tutorijali" :key="idx">
           <h2 class="accordion-header" :id="'heading' + idx">
@@ -99,7 +99,7 @@
         </div>
       </div>
 
-      <!-- Video tutorijali -->
+      
       <div class="d-flex gap-4 flex-wrap justify-content-center mt-5">
         <div class="video-wrapper">
           <h4 class="video-title text-center">Pogledajte: Kako izraditi svoju prvu Vue aplikaciju</h4>
@@ -116,7 +116,7 @@
         </div>
       </div>
 
-      <!-- Accordion - dodatne informacije -->
+      
       <div class="accordion mt-5" id="edukacijaAccordion">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
@@ -187,7 +187,7 @@
       </div>
     </section>
 
-    <!-- Komponente -->
+    
     <section id="prijavi" class="container mt-5">
       <PRIJAVI />
     </section>
@@ -199,7 +199,7 @@
     </section>
 
 
-    <!-- Statistika -->
+    
     <section class="container text-center mt-5">
       <h2 class="mb-4 gradient-text">Statistika</h2>
       <div class="row mt-4">
@@ -224,7 +224,7 @@
       </div>
     </section>
 
-    <!-- Kontakt -->
+    
     <section id="kontakt" class="container mt-5 mb-5">
       <h2 class="text-center mb-4">Kontaktirajte profesora</h2>
       <form @submit.prevent="posaljiKontakt" novalidate>
@@ -256,21 +256,21 @@
       </div>
     </section>
 
-    <!-- Footer -->
+    
     <footer class="custom-footer bg-dark text-white text-center py-4 mt-5">
       <div class="container">
         <p class="mb-2 fs-5 footer-title">TaskNest | PZI projekt postavljen na studentski server</p>
         <small class="d-block mb-3">Izradili: Matea Tufekčić &amp; Safet Srna, 2025.</small>
 
-        <!-- Ikone -->
+        
         <div class="footer-icons d-flex justify-content-center gap-3">
-          <a href="https://www.youtube.com" target="_blank" class="footer-icon" title="YouTube">
+          <a href="https://www.youtube.com/@universityofmostartv" target="_blank" class="footer-icon" title="YouTube">
             <i class="fab fa-youtube"></i>
           </a>
-          <a href="https://www.instagram.com" target="_blank" class="footer-icon" title="Instagram">
+          <a href="https://www.instagram.com/fpmoz.mostar/" target="_blank" class="footer-icon" title="Instagram">
             <i class="fab fa-instagram"></i>
           </a>
-          <a href="mailto:info@tasknest.com" class="footer-icon" title="Pošalji mail">
+          <a href="https://mail.google.com/mail/u/3/#inbox?compose=CllgCJlGVGPWXsjDqRDKRKWCGcqfgkNlWFBxVHfXwXPxXxGRQpVgqMLKvDTkjWrsTPtmTZclWJV" class="footer-icon" title="Pošalji mail">
             <i class="fas fa-envelope"></i>
           </a>
           <a href="https://fpmoz.sum.ba/" target="_blank" class="footer-icon" title="Fakultet">
@@ -281,7 +281,7 @@
     </footer>
 
 
-    <!-- Scroll to top button -->
+    
     <button @click="scrollToTop" class="btn btn-primary position-fixed bottom-0 end-0 m-4" aria-label="Scroll to top">
       ⬆️
     </button>
@@ -414,7 +414,7 @@ export default {
   created() {
     const user = localStorage.getItem("user");
     if (!user) {
-      this.$router.push('/'); // Preusmeri na login
+      this.$router.push('/'); 
     }
   },
 
@@ -436,11 +436,11 @@ export default {
         this.validEmail(this.kontakt.email) &&
         this.kontakt.poruka
       ) {
-        // Ovdje ide slanje podataka na backend ako postoji
+        
 
         this.feedbackPoruka = 'Vaša poruka je uspješno poslana. Hvala!';
 
-        // Reset forme
+        
         this.kontakt.ime = '';
         this.kontakt.email = '';
         this.kontakt.poruka = '';
@@ -468,7 +468,7 @@ export default {
 .navbar-brand {
   font-family: 'Racing Sans One', sans-serif;
   font-size: 1.8rem;
-  color: #00aaff; /* plava */
+  color: #00aaff; 
   text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
   transition: color 0.3s ease;
 }
