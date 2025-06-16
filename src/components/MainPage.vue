@@ -15,10 +15,22 @@
             
             <ul class="navbar-nav mx-auto">
               <li class="nav-item"><a class="nav-link" href="#edu">UČI WEB</a></li>
-              <li class="nav-item"><a class="nav-link" href="#prijavi">PRIJAVI PROJEKT</a></li>
-              <li class="nav-item"><a class="nav-link" href="#pratite">PRATITE RAD</a></li>
-              <li class="nav-item"><a class="nav-link" href="#ocjenjivanje">OCJENJIVANJE</a></li>
-              <li class="nav-item"><a class="nav-link" href="#kontakt">KONTAKT</a></li>
+
+<li class="nav-item" v-if="userRole === 'student' || userRole === 'admin'">
+  <a class="nav-link" href="#prijavi">PRIJAVI PROJEKT</a>
+</li>
+
+<li class="nav-item" v-if="userRole === 'professor' || userRole === 'admin'">
+  <a class="nav-link" href="#pratite">PRATITE RAD</a>
+</li>
+
+<li class="nav-item" v-if="userRole === 'professor' || userRole === 'admin'">
+  <a class="nav-link" href="#ocjenjivanje">OCJENJIVANJE</a>
+</li>
+
+<li class="nav-item"><a class="nav-link" href="#kontakt">KONTAKT</a></li>
+
+
             </ul>
 
             
@@ -31,7 +43,8 @@
         </div>
       </div>
     </nav>
-    <Login />
+    <Login v-if="!userRole" />
+
 
 
 
@@ -188,14 +201,20 @@
     </section>
 
     
-    <section id="prijavi" class="container mt-5">
-      <PRIJAVI />
-    </section>
-    <section id="pratite" class="container mt-5">
+    <section id="prijavi" class="container mt-5" v-if="userRole === 'student' || userRole === 'admin'">
+  <PRIJAVI />
+</section>
+
+    <section id="pratite" class="container mt-5" v-if="userRole === 'admin'">
       <PRATITE />
     </section>
-    <section id="ocjenjivanje" class="container mt-5">
-      <OCJENJIVANJE />
+    <section id="ocjenjivanje" class="container mt-5" v-if="userRole === 'admin' || userRole === 'professor' || userRole === 'student'">
+  <OCJENJIVANJE />
+</section>
+
+
+    <section id="ocjenjivanje" class="container mt-5" v-if="userRole === 'admin' || userRole === 'professor' || userRole === 'student'" >
+      <RokoviPrijave />
     </section>
 
 
@@ -293,14 +312,16 @@ import PRIJAVI from './PRIJAVI.vue'
 import PRATITE from './PRATITE.vue'
 import OCJENJIVANJE from './OCJENJIVANJE.vue'
 import Login from './Login.vue'
+import RokoviPrijave from './RokoviPrijave.vue'
 
 export default {
   name: 'App',
-  components: { PRIJAVI, PRATITE, OCJENJIVANJE, Login },
+  components: { PRIJAVI, PRATITE, OCJENJIVANJE, Login, RokoviPrijave },
 
   data() {
     return {
       prikaziLogin: false,
+      userRole: null,
 
       tehnologije: [
         {
@@ -412,11 +433,19 @@ export default {
   },
 
   created() {
-    const user = localStorage.getItem("user");
-    if (!user) {
-      this.$router.push('/'); 
-    }
-  },
+  const user = localStorage.getItem("user");
+  console.log('user iz localStorage:', user);
+  if (!user) {
+    this.$router.push('/');
+  } else {
+    const parsedUser = JSON.parse(user);
+    console.log('Parsed user:', parsedUser);
+    this.userRole = parsedUser.user.role;
+    console.log('userRole:', this.userRole);
+  }
+},
+
+
 
   methods: {
     validEmail(email) {
@@ -429,26 +458,38 @@ export default {
     },
 
     posaljiKontakt() {
-      this.validacija = true;
+  this.validacija = true;
 
-      if (
-        this.kontakt.ime &&
-        this.validEmail(this.kontakt.email) &&
-        this.kontakt.poruka
-      ) {
-        
+  if (
+    !this.kontakt.ime ||
+    !this.validEmail(this.kontakt.email) ||
+    !this.kontakt.poruka
+  ) {
+    this.feedbackPoruka = "Poruka je uspješno poslata!";
 
-        this.feedbackPoruka = 'Vaša poruka je uspješno poslana. Hvala!';
+setTimeout(() => {
+  this.feedbackPoruka = "";
+}, 5000);
+  }
 
-        
-        this.kontakt.ime = '';
-        this.kontakt.email = '';
-        this.kontakt.poruka = '';
-        this.validacija = false;
-      } else {
-        this.feedbackPoruka = '';
-      }
+  fetch("http://localhost/my_project/kontakt.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
     },
+    body: JSON.stringify(this.kontakt)
+  })
+    .then(response => response.json())
+    .then(data => {
+      this.feedbackPoruka = data.poruka;
+      this.kontakt = { ime: '', email: '', poruka: '' };
+      this.validacija = false;
+    })
+    .catch(error => {
+      console.error("Greška:", error);
+      this.feedbackPoruka = "Došlo je do greške prilikom slanja.";
+    });
+},
 
     scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
