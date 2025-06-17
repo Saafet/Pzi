@@ -86,6 +86,12 @@ import axios from "axios";
 
 export default {
   name: "DynamicCalendar",
+  props: {
+    userRole: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     const today = new Date();
     return {

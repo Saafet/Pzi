@@ -5,7 +5,7 @@
     </h2>
 
     
-    <div class="form-group mb-4">
+    <div v-if="userRole === 'profesor' || userRole === 'admin'" class="form-group mb-4">
       <label for="projekat">Odaberi projekat:</label>
       <select v-model="odabraniProjektId" @change="postaviOdabraniProjekt" class="form-control" id="projekat">
         <option disabled value="">-- Odaberi --</option>
@@ -76,9 +76,9 @@
       <table class="table table-bordered table-hover">
         <thead class="table-light">
           <tr>
-            <th>#</th>
-            <th>Ime i prezime</th>
-            <th>Projekt</th>
+            <th>Redni broj</th>
+            <th>Ime i Prezime</th>
+            <th>Naziv projekta</th>
             <th>Ukupno bodova</th>
             <th>Ocjena</th>
             <th>Nezadovoljeni obvezni kriteriji</th>
@@ -107,6 +107,12 @@
 <script setup>
 import { reactive, ref, computed, onMounted } from 'vue'
 import axios from 'axios'
+const props = defineProps({
+  userRole: {
+    type: String,
+    required: true
+  }
+})
 
 const projekti = ref([])
 const odabraniProjektId = ref('')

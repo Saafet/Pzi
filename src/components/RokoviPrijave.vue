@@ -1,8 +1,8 @@
 <template>
-  <div class="rokovi-container">
-    <h2>Rokovi za obranu projekata</h2>
+  <div  class="rokovi-container">
+    <h2 v-if="userRole === 'professor' || userRole === 'admin'">Rokovi za obranu projekata</h2>
 
-    <div class="dodaj-rok">
+    <div v-if="userRole === 'professor' || userRole === 'admin'" class="dodaj-rok">
       <h3>Dodaj novi rok</h3>
       <form @submit.prevent="dodajRok">
         <label>
@@ -42,8 +42,8 @@
           </button>
 
           <!-- Uređivanje -->
-          <button @click="pripremiZaUredjivanje(rok)">Uredi</button>
-          <button @click="obrisiRok(rok.id)">Obriši</button>
+          <button v-if="userRole === 'professor' || userRole === 'admin'" @click="pripremiZaUredjivanje(rok)">Uredi</button>
+          <button v-if="userRole === 'professor' || userRole === 'admin'" @click="obrisiRok(rok.id)">Obriši</button>
         </div>
       </li>
     </ul>
@@ -78,6 +78,12 @@
 <script>
 export default {
   name: "RokPrijava",
+  props: {
+    userRole: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       rokovi: [],
@@ -89,6 +95,7 @@ export default {
       porukaTip: ""
     };
   },
+
   mounted() {
     this.dohvatiRokove();
     this.dohvatiPrijave();
@@ -219,6 +226,7 @@ export default {
         this.prikaziPoruku("Greška pri ažuriranju", "error");
       }
     },
+    
     prikaziPoruku(msg, tip) {
       this.poruka = msg;
       this.porukaTip = tip;

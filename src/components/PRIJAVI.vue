@@ -2,7 +2,7 @@
   <div class="container my-5">
 
   
-    <div class="mb-5 border rounded p-3 bg-light">
+    <div v-if="userRole === 'professor' || userRole === 'admin'" class="mb-5 border rounded p-3 bg-light">
       <h3>Dodaj novu temu</h3>
       <form @submit.prevent="dodajTemu" class="row g-2 align-items-center">
         <div class="col-auto flex-grow-1">
@@ -84,8 +84,8 @@
 
               
               <div class="mt-3">
-                <button class="btn btn-sm btn-warning me-2" @click="pokreniUredi(tema)">Uredi</button>
-                <button class="btn btn-sm btn-danger" @click="obrisiTemu(tema.id)">Obriši</button>
+                <button v-if="userRole === 'professor' || userRole === 'admin'" class="btn btn-sm btn-warning me-2" @click="pokreniUredi(tema)">Uredi</button>
+                <button v-if="userRole === 'professor' || userRole === 'admin'" class="btn btn-sm btn-danger" @click="obrisiTemu(tema.id)">Obriši</button>
               </div>
             </div>
           </div>
@@ -146,6 +146,12 @@
 <script>
 export default {
   name: "PRIJAVI",
+  props: {
+    userRole: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       apiUrl: "http://localhost/my_project",

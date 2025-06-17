@@ -16,15 +16,15 @@
             <ul class="navbar-nav mx-auto">
               <li class="nav-item"><a class="nav-link" href="#edu">UČI WEB</a></li>
 
-<li class="nav-item" v-if="userRole === 'student' || userRole === 'admin'">
+<li class="nav-item" v-if="userRole === 'student' || userRole === 'professor' || userRole === 'admin'">
   <a class="nav-link" href="#prijavi">PRIJAVI PROJEKT</a>
 </li>
 
-<li class="nav-item" v-if="userRole === 'professor' || userRole === 'admin'">
+<li class="nav-item" v-if="userRole === 'student' || userRole === 'professor' || userRole === 'admin'">
   <a class="nav-link" href="#pratite">PRATITE RAD</a>
 </li>
 
-<li class="nav-item" v-if="userRole === 'professor' || userRole === 'admin'">
+<li class="nav-item" v-if="userRole === 'student' || userRole === 'professor' || userRole === 'admin'">
   <a class="nav-link" href="#ocjenjivanje">OCJENJIVANJE</a>
 </li>
 
@@ -201,20 +201,20 @@
     </section>
 
     
-    <section id="prijavi" class="container mt-5" v-if="userRole === 'student' || userRole === 'admin'">
-  <PRIJAVI />
+    <section id="prijavi" class="container mt-5" v-if="userRole === 'student' || userRole === 'professor' || userRole === 'admin'">
+  <PRIJAVI :userRole="userRole" />
 </section>
 
-    <section id="pratite" class="container mt-5" v-if="userRole === 'admin'">
-      <PRATITE />
+    <section id="pratite" class="container mt-5" v-if="userRole === 'student' || userRole === 'professor' || userRole === 'admin'">
+      <PRATITE :userRole="userRole" />
     </section>
-    <section id="ocjenjivanje" class="container mt-5" v-if="userRole === 'admin' || userRole === 'professor' || userRole === 'student'">
-  <OCJENJIVANJE />
+    <section id="ocjenjivanje" class="container mt-5" v-if="userRole === 'student' || userRole === 'professor' || userRole === 'admin'">
+  <OCJENJIVANJE :userRole="userRole" />
 </section>
 
 
-    <section id="ocjenjivanje" class="container mt-5" v-if="userRole === 'admin' || userRole === 'professor' || userRole === 'student'" >
-      <RokoviPrijave />
+    <section id="ocjenjivanje" class="container mt-5" v-if="userRole === 'student' || userRole === 'professor' || userRole === 'admin'" >
+      <RokoviPrijave :userRole="userRole" />
     </section>
 
 
