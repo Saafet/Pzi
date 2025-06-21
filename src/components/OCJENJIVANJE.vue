@@ -228,14 +228,18 @@ onMounted(() => {
 
 .container {
   font-family: 'Poppins', sans-serif;
-  color: #2c3e50;
+  color: #edeff1;
 }
 
+.container h3{
+  font-family: 'Poppins', sans-serif;
+  color: #030002;
+}
 .ocjenjivanje-box {
   padding: 2rem 2.5rem;
   border: 2px solid #2a5298;
   border-radius: 12px;
-  background: #f0f4fb;
+  background: #efeff1;
   box-shadow: 0 8px 20px rgba(42, 82, 152, 0.2);
 }
 

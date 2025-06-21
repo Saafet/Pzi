@@ -2,22 +2,22 @@
   <div class="auth-container">
     <div class="auth-form">
       <div v-if="currentForm === 'login'" class="form-container">
-        <h2>Login</h2>
+        <h2>Prijava</h2>
         <form @submit.prevent="handleLogin">
-          <input type="text" v-model="username" placeholder="Username" required />
-          <input type="password" v-model="password" placeholder="Password" required />
-          <button type="submit">Login</button>
+          <input type="text" v-model="username" placeholder="Korisničko ime" required />
+          <input type="password" v-model="password" placeholder="Šifra" required />
+          <button type="submit">Prijava</button>
         </form>
         <p @click="switchForm('register')">Nemate nalog? Registrujte se</p>
       </div>
 
       <div v-if="currentForm === 'register'" class="form-container">
-        <h2>Register</h2>
+        <h2>Registracija</h2>
         <form @submit.prevent="handleRegister">
-          <input type="text" v-model="username" placeholder="Username" required />
-          <input type="email" v-model="email" placeholder="Email" required />
-          <input type="password" v-model="password" placeholder="Password" required />
-          <button type="submit">Register</button>
+          <input type="text" v-model="username" placeholder="Korisničko ime" required />
+          <input type="email" v-model="email" placeholder="E-mail" required />
+          <input type="password" v-model="password" placeholder="Šifra" required />
+          <button type="submit">Registruj se</button>
         </form>
         <p @click="switchForm('login')">Već imate nalog? Prijavite se</p>
       </div>
