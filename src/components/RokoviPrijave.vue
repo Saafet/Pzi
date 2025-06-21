@@ -34,7 +34,7 @@
     </div>
 
         <div class="akcije">
-          <!-- Prikazuje se ako je profesor ili admin i NIJE prijavljen -->
+          
 <button
   v-if="(userRole === 'student' || userRole === 'admin') && !prijavljeniRokoviIds.includes(rok.id)"
   @click="prijaviNaRok(rok.id)"
@@ -42,7 +42,7 @@
   Prijavi se
 </button>
 
-<!-- Prikazuje se ako je profesor ili admin i JESTE prijavljen -->
+
 <button
   v-else-if="(userRole === 'student' || userRole === 'admin') && prijavljeniRokoviIds.includes(rok.id)"
   @click="odjaviSaRoka(rok.id)"

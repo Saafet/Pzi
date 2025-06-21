@@ -458,7 +458,7 @@ export default {
       validacija: false,
       feedbackPoruka: '',
 
-      poruke: [], // Ovdje će se držati poruke koje su učitane iz baze
+      poruke: [], 
     }
   },
 
@@ -516,7 +516,7 @@ export default {
           this.kontakt = { ime: '', email: '', poruka: '' };
           this.validacija = false;
 
-          // Ako je profesor ili admin, osvježi listu poruka
+          
           if (this.userRole === 'professor' || this.userRole === 'admin') {
             this.ucitajPoruke();
           }
