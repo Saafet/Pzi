@@ -145,7 +145,14 @@
               <strong>🔗 Poveznica:</strong> <a href="https://eucenje.sum.ba/moodle/course/view.php?id=4980" target="_blank">e-kolegij</a><br>
               <strong>🔐 Lozinka za pristup:</strong> <code>Pzi2025#</code><br><br>
               📅 <strong>Orašje - Google Meet:</strong><br>
-              <a href="https://meet.google.com/xyz-abc-def" target="_blank" class="btn btn-outline-primary mt-2">Pristupi predavanju</a>
+              <a
+  href="https://meet.google.com/abc-defg-hij"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="btn btn-primary"
+>
+  Pristupi predavanju
+</a>
             </div>
           </div>
         </div>
@@ -193,7 +200,7 @@
             data-bs-parent="#edukacijaAccordion">
             <div class="accordion-body">
               Pogledaj izvorni kod aplikacije.<br>
-              <a href="https://github.com/MateaTufekcic/PZI.git" class="btn btn-dark mt-2" target="_blank">Pogledaj primjer</a>
+              <a href="https://github.com/Saafet/PZI" class="btn btn-dark mt-2" target="_blank">Pogledaj primjer</a>
             </div>
           </div>
         </div>
@@ -231,13 +238,13 @@
         <div class="col-md-4">
           <div class="stat-box">
             <h3 class="counter gradient-text">21</h3>
-            <p class="gradient-text">Aktivnih korisnika</p>
+            <p class="gradient-text">Aktivnih učenika</p>
           </div>
         </div>
         <div class="col-md-4">
           <div class="stat-box">
             <h3 class="counter gradient-text">9</h3>
-            <p class="gradient-text">Mentora</p>
+            <p class="gradient-text">Profesora</p>
           </div>
         </div>
       </div>
@@ -245,7 +252,7 @@
 
     
     <section id="kontakt" class="container mt-5 mb-5">
-      <h2 class="text-center mb-4">Kontaktirajte profesora</h2>
+      <h2 class="text-center mb-4">Kontaktirajte profesora ili admina</h2>
       <form @submit.prevent="posaljiKontakt" novalidate>
         <div class="mb-3">
           <label for="ime" class="form-label">Ime i prezime</label>
@@ -274,6 +281,26 @@
         {{ feedbackPoruka }}
       </div>
     </section>
+    <div v-if="(userRole === 'professor' || userRole === 'admin')" class="poruke-wrapper mt-5">
+  <h4>Poruke učenika:</h4>
+  <div class="poruke-container">
+    <div
+      v-for="msg in poruke"
+      :key="msg.id"
+      class="card shadow-sm"
+      style="width: 350px;"
+    >
+      <div class="card-body">
+        <h5 class="card-title"><strong>Ime i Prezime učenika: </strong>{{ msg.ime }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted"><strong>Email: </strong>{{ msg.email }}</h6>
+        <p class="card-text"><strong>Poruka: </strong>{{ msg.poruka }}</p>
+        <button class="btn btn-danger btn-sm" @click="obrisiPoruku(msg.id)">Obriši</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
     
     <footer class="custom-footer bg-dark text-white text-center py-4 mt-5">
@@ -311,12 +338,12 @@
 import PRIJAVI from './PRIJAVI.vue'
 import PRATITE from './PRATITE.vue'
 import OCJENJIVANJE from './OCJENJIVANJE.vue'
-import Login from './Login.vue'
+import LoginForm from './LoginForm.vue'
 import RokoviPrijave from './RokoviPrijave.vue'
 
 export default {
   name: 'App',
-  components: { PRIJAVI, PRATITE, OCJENJIVANJE, Login, RokoviPrijave },
+  components: { PRIJAVI, PRATITE, OCJENJIVANJE, LoginForm, RokoviPrijave },
 
   data() {
     return {
@@ -427,25 +454,30 @@ export default {
         email: '',
         poruka: '',
       },
+
       validacija: false,
       feedbackPoruka: '',
+
+      poruke: [], // Ovdje će se držati poruke koje su učitane iz baze
     }
   },
 
   created() {
-  const user = localStorage.getItem("user");
-  console.log('user iz localStorage:', user);
-  if (!user) {
-    this.$router.push('/');
-  } else {
-    const parsedUser = JSON.parse(user);
-    console.log('Parsed user:', parsedUser);
-    this.userRole = parsedUser.user.role;
-    console.log('userRole:', this.userRole);
-  }
-},
+    const user = localStorage.getItem("user");
+    console.log('user iz localStorage:', user);
+    if (!user) {
+      this.$router.push('/');
+    } else {
+      const parsedUser = JSON.parse(user);
+      console.log('Parsed user:', parsedUser);
+      this.userRole = parsedUser.user.role;
+      console.log('userRole:', this.userRole);
 
-
+      if (this.userRole === 'professor' || this.userRole === 'admin') {
+        this.ucitajPoruke();
+      }
+    }
+  },
 
   methods: {
     validEmail(email) {
@@ -453,43 +485,90 @@ export default {
       return re.test(email);
     },
 
+    async posaljiKontakt() {
+      this.validacija = true;
+
+      if (
+        !this.kontakt.ime ||
+        !this.validEmail(this.kontakt.email) ||
+        !this.kontakt.poruka
+      ) {
+        this.feedbackPoruka = "Molimo popunite sva polja ispravno.";
+        setTimeout(() => {
+          this.feedbackPoruka = "";
+        }, 5000);
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost/my_project/kontakt.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(this.kontakt)
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          this.feedbackPoruka = data.poruka || "Poruka je uspješno poslata!";
+          this.kontakt = { ime: '', email: '', poruka: '' };
+          this.validacija = false;
+
+          // Ako je profesor ili admin, osvježi listu poruka
+          if (this.userRole === 'professor' || this.userRole === 'admin') {
+            this.ucitajPoruke();
+          }
+        } else {
+          this.feedbackPoruka = data.poruka || "Greška prilikom slanja poruke.";
+        }
+      } catch (error) {
+        console.error("Greška:", error);
+        this.feedbackPoruka = "Došlo je do greške prilikom slanja.";
+      }
+    },
+
+    async ucitajPoruke() {
+      try {
+        const res = await fetch("http://localhost/my_project/getMessages.php");
+        if (!res.ok) throw new Error("Greška pri dohvatu poruka.");
+        this.poruke = await res.json();
+      } catch (error) {
+        console.error(error);
+        this.poruke = [];
+      }
+    },
+
+    async obrisiPoruku(id) {
+      if (!confirm("Jeste li sigurni da želite obrisati ovu poruku?")) return;
+
+      try {
+        const res = await fetch("http://localhost/my_project/deleteMessage.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id }),
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          this.poruke = this.poruke.filter(p => p.id !== id);
+        } else {
+          alert(data.poruka || "Greška prilikom brisanja poruke.");
+        }
+      } catch (error) {
+        console.error(error);
+        alert("Greška pri brisanju poruke.");
+      }
+    },
+
+    formatirajDatum(datum) {
+      return new Date(datum).toLocaleString();
+    },
+
     otvoriLogin() {
       this.prikaziLogin = true;
     },
-
-    posaljiKontakt() {
-  this.validacija = true;
-
-  if (
-    !this.kontakt.ime ||
-    !this.validEmail(this.kontakt.email) ||
-    !this.kontakt.poruka
-  ) {
-    this.feedbackPoruka = "Poruka je uspješno poslata!";
-
-setTimeout(() => {
-  this.feedbackPoruka = "";
-}, 5000);
-  }
-
-  fetch("http://localhost/my_project/kontakt.php", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(this.kontakt)
-  })
-    .then(response => response.json())
-    .then(data => {
-      this.feedbackPoruka = data.poruka;
-      this.kontakt = { ime: '', email: '', poruka: '' };
-      this.validacija = false;
-    })
-    .catch(error => {
-      console.error("Greška:", error);
-      this.feedbackPoruka = "Došlo je do greške prilikom slanja.";
-    });
-},
 
     scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -503,8 +582,10 @@ setTimeout(() => {
 }
 </script>
 
+
 <style scoped>
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 .navbar-brand {
   font-family: 'Racing Sans One', sans-serif;
@@ -603,11 +684,11 @@ object-fit: cover;
 }
 
 .tech-card {
-  width: 300px; 
-  height: 200px;
-    
-  
+  width: 100%;
+  max-width: 300px;
+  height: auto;
 }
+
 
 .tech-card:hover {
 background-color:rgb(122, 123, 124);
@@ -635,7 +716,9 @@ z-index: 9999;
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 8px 18px rgba(42, 82, 152, 0.2);
-  width: 45%;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 2rem;
 }
 
 .stat-box {
@@ -694,5 +777,104 @@ z-index: 9999;
   transform: scale(1.2);
   text-shadow: 0 0 8px #3a4ca8;
 }
+
+h4 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #00aaff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #1c1c1c, #2e2e2e);
+  color: #e0e0e0;
+  box-shadow: 0 8px 18px rgba(0, 170, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 170, 255, 0.35);
+}
+
+.card-title,
+.card-subtitle,
+.card-text {
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 0.75rem;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.card-subtitle {
+  font-size: 0.95rem;
+  color: #bbbbbb;
+}
+
+.card-text {
+  font-size: 0.95rem;
+  color: #dddddd;
+}
+
+.btn-danger {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  background-color: #ff4d4d;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-danger:hover {
+  background-color: #cc0000;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
+}
+
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.col-md-4 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.poruke-wrapper {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.poruke-wrapper h4 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #f6f6f7;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.poruke-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.page-frame {
+  max-width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
 </style>
  

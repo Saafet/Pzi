@@ -34,21 +34,31 @@
     </div>
 
         <div class="akcije">
-          <button v-if="!prijavljeniRokoviIds.includes(rok.id)" @click="prijaviNaRok(rok.id)">
-            Prijavi se
-          </button>
-          <button v-else @click="odjaviSaRoka(rok.id)">
-            Odjavi se
-          </button>
+          <!-- Prikazuje se ako je profesor ili admin i NIJE prijavljen -->
+<button
+  v-if="(userRole === 'student' || userRole === 'admin') && !prijavljeniRokoviIds.includes(rok.id)"
+  @click="prijaviNaRok(rok.id)"
+>
+  Prijavi se
+</button>
 
-          <!-- Uređivanje -->
+<!-- Prikazuje se ako je profesor ili admin i JESTE prijavljen -->
+<button
+  v-else-if="(userRole === 'student' || userRole === 'admin') && prijavljeniRokoviIds.includes(rok.id)"
+  @click="odjaviSaRoka(rok.id)"
+>
+  Odjavi se
+</button>
+
+
+          
           <button v-if="userRole === 'professor' || userRole === 'admin'" @click="pripremiZaUredjivanje(rok)">Uredi</button>
           <button v-if="userRole === 'professor' || userRole === 'admin'" @click="obrisiRok(rok.id)">Obriši</button>
         </div>
       </li>
     </ul>
 
-    <!-- Forma za uređivanje -->
+    
     <div v-if="urediRok.id" class="dodaj-rok">
       <h3>Uredi rok</h3>
       <form @submit.prevent="urediPostojeciRok">
@@ -154,13 +164,13 @@ export default {
     if (data.success) {
       this.prikaziPoruku("Prijava uspješna", "success");
 
-      // 🔧 Ručno dodaj u listu prijavljenih
+      
       if (!this.prijavljeniRokoviIds.includes(rokId)) {
         this.prijavljeniRokoviIds.push(rokId);
       }
 
-      // Ako želiš opet dohvatiti sve iz backenda:
-      // this.dohvatiPrijave(); // nije nužno odmah
+      
+      
     } else {
       this.prikaziPoruku(data.message || "Greška pri prijavi", "error");
       if (data.error) console.error("Detalji greške:", data.error);
@@ -242,7 +252,7 @@ export default {
 
 <style scoped>
 .rokovi-container {
-  max-width: 600px;
+  max-width: 1290px;
   margin: auto;
   font-family: Arial, sans-serif;
   padding: 2rem;

@@ -1,11 +1,11 @@
 <template>
   <div class="container my-5 ocjenjivanje-box">
-    <h2 class="main-title-ocjenjivanje">
+    <h2 v-if="userRole === 'professor' || userRole === 'admin'" class="main-title-ocjenjivanje">
       <span class="title-icon"></span> Ocjenjivanje
     </h2>
 
     
-    <div v-if="userRole === 'profesor' || userRole === 'admin'" class="form-group mb-4">
+    <div v-if="userRole === 'professor' || userRole === 'admin'" class="form-group mb-4">
       <label for="projekat">Odaberi projekat:</label>
       <select v-model="odabraniProjektId" @change="postaviOdabraniProjekt" class="form-control" id="projekat">
         <option disabled value="">-- Odaberi --</option>
@@ -67,7 +67,7 @@
 
     
     <div class="mt-3">
-      <p><strong>Broj učenika u sistemu:</strong> {{ sviUcenici.length }}</p>
+      <p v-if="userRole === 'professor' || userRole === 'admin'" ><strong>Broj učenika u sistemu:</strong> {{ sviUcenici.length }}</p>
     </div>
 
     

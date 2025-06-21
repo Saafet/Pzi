@@ -1,7 +1,7 @@
 <template>
-  <div class="container my-5">
+  <div v-if="userRole === 'professor' || userRole === 'admin'" class="container my-5">
     <h2 class="main-title">Praćenje studentskih projekata</h2>
-    <p class="subtitle">Pregled napretka studenata po fazama projekta.</p>
+    <p class="subtitle">Ovdje možete vidjeti kada su prijavljeni projekti.</p>
 
     <div class="calendar-wrapper my-5 p-4 rounded shadow-sm">
       <div class="calendar-header d-flex align-center justify-between">

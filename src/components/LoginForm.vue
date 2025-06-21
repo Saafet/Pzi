@@ -8,7 +8,7 @@
           <input type="password" v-model="password" placeholder="Password" required />
           <button type="submit">Login</button>
         </form>
-        <p @click="switchForm('register')">Don't have an account? Register</p>
+        <p @click="switchForm('register')">Nemate nalog? Registrujte se</p>
       </div>
 
       <div v-if="currentForm === 'register'" class="form-container">
@@ -19,7 +19,7 @@
           <input type="password" v-model="password" placeholder="Password" required />
           <button type="submit">Register</button>
         </form>
-        <p @click="switchForm('login')">Already have an account? Login</p>
+        <p @click="switchForm('login')">Već imate nalog? Prijavite se</p>
       </div>
     </div>
   </div>

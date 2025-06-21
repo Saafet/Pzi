@@ -21,7 +21,7 @@
     </div>
 
     
-    <div class="mb-5">
+    <div v-if="userRole === 'student' || userRole === 'admin'" class="mb-5">
       <h2>Prijava projekta</h2>
       <form @submit.prevent="dodajProjekt">
         <div class="mb-3">
@@ -55,7 +55,7 @@
               :disabled="temaZauzeta(tema.id)"
             >
               {{ tema.naziv }}
-              <span v-if="temaZauzeta(tema.id)"> (zauzeta)</span>
+              <span v-if="temaZauzeta(tema.id)">(Tema je zauzeta)</span>
             </option>
           </select>
         </div>
@@ -67,7 +67,7 @@
     
     <div class="mb-5">
       <h3>Teme dostupne za odabir</h3>
-      <div class="row row-cols-1 row-cols-md-2 g-4">
+      <div class="row row-cols-1 row-cols-md-3 g-4">
         <div class="col" v-for="tema in sveTeme" :key="tema.id">
           <div
             class="card h-100 shadow"
@@ -94,8 +94,8 @@
     </div>
 
     
-    <div class="mb-5">
-      <h3>Vaši prijavljeni projekti</h3>
+    <div v-if="userRole === 'student' || userRole === 'admin'" class="mb-5">
+      <h3 >Vaši prijavljeni projekti</h3>
       <div v-if="projekti.length === 0">
         <p>Nema prijavljenih projekata.</p>
       </div>
@@ -245,8 +245,10 @@ export default {
       }
     },
     temaZauzeta(temaId) {
-      return this.projekti.some((p) => p.tema_id === temaId);
-    },
+  const brojPrijava = this.projekti.filter(p => p.tema_id === temaId).length;
+  return brojPrijava >= 2;
+}
+,
     pokreniUredi(tema) {
       this.urediTemu = { ...tema };
     },
