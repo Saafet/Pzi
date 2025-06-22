@@ -501,7 +501,7 @@ export default {
       }
 
       try {
-        const res = await fetch("http://localhost/my_project/kontakt.php", {
+        const res = await fetch("http://studenti.sumit.ba/pzi/backend/kontakt.php", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -531,7 +531,7 @@ export default {
 
     async ucitajPoruke() {
       try {
-        const res = await fetch("http://localhost/my_project/getMessages.php");
+        const res = await fetch("http://studenti.sumit.ba/pzi/backend/getMessages.php");
         if (!res.ok) throw new Error("Greška pri dohvatu poruka.");
         this.poruke = await res.json();
       } catch (error) {
@@ -544,7 +544,7 @@ export default {
       if (!confirm("Jeste li sigurni da želite obrisati ovu poruku?")) return;
 
       try {
-        const res = await fetch("http://localhost/my_project/deleteMessage.php", {
+        const res = await fetch("http://studenti.sumit.ba/pzi/backend/deleteMessage.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ id }),

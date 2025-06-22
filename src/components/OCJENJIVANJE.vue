@@ -147,7 +147,7 @@ const sviUcenici = ref([])
 
 const dohvatiProjekte = async () => {
   try {
-    const res = await axios.get("http://localhost/my_project/dohvati-projekte.php")
+    const res = await axios.get("http://studenti.sumit.ba/pzi/backend/dohvati-projekte.php")
     if (res.data.success) {
       projekti.value = res.data.projekti
     }
@@ -158,7 +158,7 @@ const dohvatiProjekte = async () => {
 
 const dohvatiUcenikeSaOcjenama = async () => {
   try {
-    const res = await axios.get("http://localhost/my_project/dohvati-ucenike-sa-ocjenama.php")
+    const res = await axios.get("http://studenti.sumit.ba/pzi/backend/dohvati-ucenike-sa-ocjenama.php")
     if (res.data.success) {
       sviUcenici.value = res.data.ucenici.map(ucenik => ({
         ...ucenik,
@@ -196,7 +196,7 @@ const spremiOcjenu = async () => {
       nezadovoljeni_kriteriji: nezadovoljeniObvezniKriteriji.value.map(k => k.naziv)
     }
 
-    const res = await axios.post("http://localhost/my_project/spremi-ocjenu.php", podaci)
+    const res = await axios.post("http://studenti.sumit.ba/pzi/backend/spremi-ocjenu.php", podaci)
     if (res.data.success) {
       alert("Ocjena je spremljena!")
       await dohvatiUcenikeSaOcjenama()

@@ -40,7 +40,7 @@ export default {
   methods: {
     async handleLogin() {
       try {
-        const response = await axios.post("http://localhost/my_project/login.php", {
+        const response = await axios.post("http://studenti.sumit.ba/pzi/backend/login.php", {
           username: this.username,
           password: this.password
         });
@@ -59,7 +59,7 @@ export default {
 
     async handleRegister() {
       try {
-        const response = await axios.post("http://localhost/my_project/register.php", {
+        const response = await axios.post("http://studenti.sumit.ba/pzi/backend/register.php", {
           username: this.username,
           email: this.email,
           password: this.password

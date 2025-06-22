@@ -113,7 +113,7 @@ export default {
   methods: {
     async dohvatiRokove() {
       try {
-        const res = await fetch("http://localhost/my_project/rokovi.php");
+        const res = await fetch("http://studenti.sumit.ba/pzi/backend/rokovi.php");
         const data = await res.json();
         if (data.success) this.rokovi = data.data;
         else this.prikaziPoruku(data.message || "Greška pri dohvatu rokova", "error");
@@ -123,7 +123,7 @@ export default {
     },
     async dohvatiPrijave() {
       try {
-        const res = await fetch(`http://localhost/my_project/prijave.php?user_id=${this.userId}`);
+        const res = await fetch(`http://studenti.sumit.ba/pzi/backend/prijave.php?user_id=${this.userId}`);
         const data = await res.json();
         if (data.success) {
           this.prijavljeniRokoviIds = data.data.map(p => p.rok_id);
@@ -136,7 +136,7 @@ export default {
     },
     async dodajRok() {
       try {
-        const res = await fetch("http://localhost/my_project/rokovi.php", {
+        const res = await fetch("http://studenti.sumit.ba/pzi/backend/rokovi.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(this.noviRok)
@@ -155,7 +155,7 @@ export default {
     },
     async prijaviNaRok(rokId) {
   try {
-    const res = await fetch("http://localhost/my_project/prijave.php", {
+    const res = await fetch("http://studenti.sumit.ba/pzi/backend/prijave.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user_id: this.userId, rok_id: rokId }),
@@ -181,7 +181,7 @@ export default {
 },
     async odjaviSaRoka(rokId) {
       try {
-        const res = await fetch("http://localhost/my_project/prijave.php", {
+        const res = await fetch("http://studenti.sumit.ba/pzi/backend/prijave.php", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ user_id: this.userId, rok_id: rokId })
@@ -200,7 +200,7 @@ export default {
     async obrisiRok(rokId) {
       if (!confirm("Jesi siguran da želiš obrisati ovaj rok?")) return;
       try {
-        const res = await fetch(`http://localhost/my_project/rokovi.php?id=${rokId}`, {
+        const res = await fetch(`http://studenti.sumit.ba/pzi/backend/rokovi.php?id=${rokId}`, {
           method: "DELETE"
         });
         const data = await res.json();
@@ -219,7 +219,7 @@ export default {
     },
     async urediPostojeciRok() {
       try {
-        const res = await fetch(`http://localhost/my_project/rokovi.php?id=${this.urediRok.id}`, {
+        const res = await fetch(`http://studenti.sumit.ba/pzi/backend/rokovi.php?id=${this.urediRok.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(this.urediRok)

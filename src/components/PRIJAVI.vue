@@ -154,7 +154,7 @@ export default {
   },
   data() {
     return {
-      apiUrl: "http://localhost/my_project",
+      apiUrl: "http://studenti.sumit.ba/pzi/backend/",
       forma: { ime: "", prezime: "", email: "", datum: "", tema_id: "" },
       novaTema: "",
       sveTeme: [],

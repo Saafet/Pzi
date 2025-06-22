@@ -171,7 +171,7 @@ export default {
     },
     async loadProjects() {
       try {
-        const res = await axios.get("http://localhost/my_project/dohvati-projekte.php");
+        const res = await axios.get("http://studenti.sumit.ba/pzi/backend/dohvati-projekte.php");
         if (res.data.success) {
           this.allProjects = res.data.projekti;
         }
